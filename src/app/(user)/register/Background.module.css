@@ -1,0 +1,6 @@
+.bgImage {
+    background-image: url('/public/resort.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+  }
