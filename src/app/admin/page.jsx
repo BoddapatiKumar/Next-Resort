@@ -1,10 +1,30 @@
+import { redirect } from "next/navigation";
+import { auth } from "../authOptions"
+import Link from "next/link";
+import AdminNavigation from "../components/AdminNavigation";
 
-const page = () => {
+const Adminpage = async() => {
+  const session=await auth();
+
+  if(!session)
+  {
+    redirect('/login');
+  }
   return (
     <div>
-      <h1>Admin Page</h1>
+      {
+        session ? (
+          <>
+            <AdminNavigation />
+            <h1>Admin Page</h1>
+          </>
+      ):"Not authorized"
+      }
+
+      <Link href=''>Login</Link>
+      
     </div>
   )
 }
 
-export default page
+export default Adminpage
