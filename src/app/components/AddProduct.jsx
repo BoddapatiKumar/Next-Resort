@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
+import { productAction } from '../serverActions/productAction';
 
 
 const AddProduct = () => {
@@ -15,6 +16,33 @@ const AddProduct = () => {
         e.preventDefault();
         const recordDetails={title,price,offer,amen,description,image};
         console.log(recordDetails);
+        try {
+            await productAction(recordDetails);
+        } catch (error) {
+            console.log(error);
+        }
+
+        const data=new FormData();
+        data.append('title',title);
+        data.append('price',price);
+        data.append('offer',offer);
+        data.append('amen',amen);
+        data.append('description',description);
+        data.append('image',image);
+
+        try {
+            const response= await fetch('http://localhost:3000/api/admin/add-product',{
+                method:'POST',
+                body:data
+            })
+            const result=await response.json();
+            if(result.success)
+            {
+                alert('record added successfully');
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
   return (
     <div  className='container p-4 w-50 bg-light border-5 rounded-3xl mt-5'>
