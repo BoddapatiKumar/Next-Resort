@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "../authOptions"
 import Link from "next/link";
 import AdminNavigation from "../components/AdminNavigation";
+import AddProduct from "../components/AddProduct";
 
 const Adminpage = async() => {
   const session=await auth();
@@ -16,12 +17,12 @@ const Adminpage = async() => {
         session ? (
           <>
             <AdminNavigation />
-            <h1>Admin Page</h1>
+            <AddProduct />
           </>
       ):"Not authorized"
       }
 
-      <Link href=''>Login</Link>
+      <Link href='/login'>Login</Link>
       
     </div>
   )
