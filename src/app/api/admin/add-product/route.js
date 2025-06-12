@@ -6,8 +6,9 @@ import path from 'path';
 
 export async function GET(){
     await DBconnection();
+    const records=await productModel.find({});
 
-    return NextResponse.json({msg:"api testing"});
+    return NextResponse.json({data:records});
 }
 
 
