@@ -1,16 +1,21 @@
-// import { redirect } from "next/navigation";
+
+import { redirect } from "next/navigation";
 import Adminpage from "./admin/page";
 import { auth } from "./authOptions";
 import UserNavigation from "./components/UserNavigation";
 import DBconnection from "./utils/config/db";
+import ProductCollection from "./components/ProductCollection";
+import Image from 'next/image';
 
 
 export default async function Home() {
 
- 
-
   await DBconnection();
+  
   const session= await auth();
+  if(!session){
+    redirect('/login');
+  }
   // console.log("user name ",session?.user);
   const username=session?.user?.name;
   
@@ -18,7 +23,15 @@ export default async function Home() {
     <div>
        {session?.user?.role==='user' && <div className="bg-amber-50">
         <UserNavigation username={username} />
-        <h1>Welcome to Holiday Resort</h1>
+        <Image 
+        alt="resort"
+        src="/banner.jpg"
+        width={1600}
+        height={500}
+        layout="responsive"
+        >  
+        </Image>
+        <ProductCollection />
       </div>}
 
       {
