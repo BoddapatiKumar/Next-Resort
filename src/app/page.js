@@ -28,7 +28,6 @@ export default async function Home() {
         src="/banner.jpg"
         width={1600}
         height={500}
-        layout="responsive"
         >  
         </Image>
         <ProductCollection />

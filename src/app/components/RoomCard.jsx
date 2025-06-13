@@ -38,7 +38,7 @@ const RoomCard = ({room}) => {
 
            {/* Details Button  */}
           <div className="col-md-3 text-end p-3">
-            <Link href={`/api/admin/product/${room._id}`}><button className="btn btn-primary px-4">Details</button></Link>
+            <Link href={`/details/${room._id}`}><button className="btn btn-primary px-4">Details</button></Link>
           </div>
         </div>
       </div>
