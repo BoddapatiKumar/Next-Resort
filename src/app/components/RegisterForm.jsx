@@ -4,8 +4,10 @@ import { useFormik } from 'formik'
 import React from 'react'
 import { RegisterAction } from '../serverActions/RegisterAction'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const RegisterForm = () => {
+  const router=useRouter();
     const formik=useFormik({
         initialValues:{
             username:'',
@@ -19,6 +21,7 @@ const RegisterForm = () => {
               if(response.success){
                 alert("Registration Successfull");
               }
+              router.push('/login');
 
             } catch (error) {
               console.log(error);

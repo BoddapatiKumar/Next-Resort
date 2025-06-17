@@ -2,12 +2,14 @@
 
 import CalenderComponent from "@/app/components/CalenderComponent";
 import UserNavigation from "@/app/components/UserNavigation";
+import { bookingAction } from "@/app/serverActions/BookingAction";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const DynamicProduct = () => {
   const [record, setRecord] = useState({});
+  const [selectedDates, setSelectedDates] = useState(null);
 
   const params = useParams();
   const { id } = params;
@@ -22,18 +24,51 @@ const DynamicProduct = () => {
     setRecord(newData.data);
   };
 
+  const handleBook = async () => {
+    if (!selectedDates) {
+      alert("Dates not selected");
+      return;
+    }
+
+    const bookingDetails = { record, selectedDates };
+
+    console.log("record details :", record);
+    try {
+      await bookingAction(bookingDetails);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchSingleRecord();
   }, []);
 
   if (!record || Object.keys(record).length === 0) {
-    return <div className="text-center mt-5">Loading...</div>;
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh" }}
+      >
+        <div
+          className="spinner-border text-primary"
+          role="status"
+          style={{ width: "4rem", height: "4rem" }} 
+        >
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
   }
+  const handleSelectedDates = (dates) => {
+    setSelectedDates(dates);
+    console.log("selected dates : ", dates);
+  };
 
   return (
     <div>
       <UserNavigation />
-      <CalenderComponent />
+      <CalenderComponent onDatesSelect={handleSelectedDates} />
       <div
         className="d-flex p-5 m-2 bg-amber-100 min-vh-100"
         style={{ gap: "20px" }}
@@ -73,7 +108,12 @@ const DynamicProduct = () => {
             🎁Discount {record.offer}
           </div>
           <div className="d-flex justify-content-center gap-3 mt-5">
-            <button className="btn btn-success w-40">Book Now</button>
+            <button
+              className="btn btn-success w-40"
+              onClick={() => handleBook()}
+            >
+              Book Now
+            </button>
             <Link href="/" className="btn btn-danger w-40">
               Go Back
             </Link>

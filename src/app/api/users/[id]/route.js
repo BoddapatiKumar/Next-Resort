@@ -1,23 +1,30 @@
 import DBconnection from "@/app/utils/config/db";
 import userModel from "@/app/utils/models/User";
+import bookingModel from "@/app/utils/models/Bookings";
 import { NextResponse } from "next/server";
 
-export async function GET(request,{params}){
-    await DBconnection();
-    const {id}=params;
-    console.log("dynamic id",id);
+export async function GET(request, { params }) {
+  await DBconnection();
 
-    try {
-        if(!id)
-        {
-            return NextResponse.json({success:false,messsage:"no user found"},{status:404});
-        }
+  const { id } = params;
+  console.log("dynamic Id:", id);
 
-        const user=await userModel.findById(id);
-        
-        return NextResponse.json({success:true,data:user});
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json({success:false,message:"Invalid id"},{status:500});
+  try {
+    if (!id) {
+      return NextResponse.json(
+        { success: false, message: "no user found" },
+        { status: 404 }
+      );
     }
+
+    const user = await userModel.findById(id).populate("bookings");
+
+    return NextResponse.json({ success: true, data: user });
+  } catch (error) {
+    console.error("Fetch user error:", error);
+    return NextResponse.json(
+      { success: false, message: "Server error while fetching user" },
+      { status: 500 }
+    );
+  }
 }

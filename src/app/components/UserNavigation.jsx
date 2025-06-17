@@ -9,9 +9,9 @@ const UserNavigation = ({username}) => {
         <div className="">
             call now : 123 456 789
         </div>
-        <div>
-            Bookings
-        </div>
+        <Link href="/invoice">
+            <div className="text-white text-decoration-none"> Bookings</div>
+        </Link>
         <div>
             <p>Welcome : {username}</p>
         </div>
